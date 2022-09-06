@@ -3,8 +3,8 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import config from 'src/config/config';
 import { User } from 'src/user/entities/user.entity';
-import { PayloadToken } from '../models/token.model';
-import { LoginResponseDto } from '../dto/login-response.dto';
+import { PayloadToken } from './models/token.model';
+import { LoginResponseDto } from './dto/login-response.dto';
 import { UserService } from 'src/user/user.service';
 import { ConfigType } from '@nestjs/config';
 
