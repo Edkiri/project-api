@@ -12,16 +12,6 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findOne(userId: number) {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-    });
-    if (!user) {
-      throw new HttpException(`Not found user with id "${userId}"`, 404);
-    }
-    return user;
-  }
-
   async create(data: CreateUserDto) {
     const oldEmailUser = await this.userRepository.findOne({
       where: { email: data.email },
@@ -36,5 +26,21 @@ export class UserService {
     newUser.password = hashPassword;
     const user = await this.userRepository.save(newUser);
     return this.userRepository.findOneOrFail({ where: { id: user.id } });
+  }
+
+  async findOne(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new HttpException(`Not found user with id "${userId}"`, 404);
+    }
+    return user;
+  }
+
+  async findOneByUsername(username: string) {
+    return this.userRepository.findOne({
+      where: { username },
+    });
   }
 }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 import config from './config/config';
 import configSchema from './config/config.schema';
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module';
     }),
     DatabaseModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
