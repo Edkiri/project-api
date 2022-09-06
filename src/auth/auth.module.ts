@@ -13,8 +13,6 @@ import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
-    UserModule,
-    PassportModule,
     JwtModule.registerAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
@@ -26,6 +24,8 @@ import { LocalStrategy } from './strategies/local.strategy';
         };
       },
     }),
+    PassportModule,
+    UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, JwtAuthGuard],

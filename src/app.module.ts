@@ -6,6 +6,7 @@ import config from './config/config';
 import configSchema from './config/config.schema';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
+import { WorkModule } from './work/work.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserModule } from './user/user.module';
     DatabaseModule,
     UserModule,
     AuthModule,
+    WorkModule,
   ],
   controllers: [],
   providers: [],
