@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateWorkDto {
-  @IsNumber()
-  @IsPositive()
-  typeId!: number;
+  @IsString()
+  @IsNotEmpty()
+  typeName!: string;
 
   @IsString()
   @IsNotEmpty()

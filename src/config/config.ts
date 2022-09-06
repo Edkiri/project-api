@@ -11,7 +11,7 @@ export default registerAs('config', () => {
     adminUser: {
       email: process.env.ADMIN_EMAIL,
       password: process.env.ADMIN_PASSWORD,
-      displayName: process.env.ADMIN_DISPLAY_NAME,
+      username: process.env.ADMIN_USERNAME,
     },
   };
 });

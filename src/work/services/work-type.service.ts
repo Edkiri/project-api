@@ -10,12 +10,12 @@ export class WorkTypeService {
     @InjectRepository(WorkType) private workTypeRepo: Repository<WorkType>,
   ) {}
 
-  async findOne(id: number) {
+  async findOneByName(name: string) {
     const type = await this.workTypeRepo.findOne({
-      where: { id },
+      where: { name },
     });
     if (!type) {
-      throw new HttpException(`Not found work-type with id '${id}'.`, 404);
+      throw new HttpException(`Not found work-type with name '${name}'.`, 404);
     }
     return type;
   }
