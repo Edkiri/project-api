@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { HttpException } from '@nestjs/common/exceptions';
+import { HttpException, NotFoundException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -21,6 +21,12 @@ export class WorkService {
     return this.workRepo.save(newWork);
   }
 
+  async findOne(id: number) {
+    const work = await this.workRepo.findOne({ where: { id } });
+    if (!work) throw new NotFoundException(`Not found work with id '${id}'`);
+    return work;
+  }
+
   async findActiveWorks() {
     return this.workRepo.find({
       where: { isFinished: false },
@@ -31,7 +37,6 @@ export class WorkService {
     const oldWork = await this.workRepo.findOne({
       where: workData,
     });
-    console.log('OldWorkData', oldWork);
     if (!oldWork) {
       throw new HttpException(
         `Ya existe esta obra: '${oldWork.description} - ${oldWork.clientName}'`,

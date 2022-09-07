@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateWorkTypeDto {
+export class CreateBudgetUnitDto {
   @IsString()
   @IsNotEmpty()
   name!: string;

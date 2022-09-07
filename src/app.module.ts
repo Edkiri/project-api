@@ -8,6 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { WorkModule } from './work/work.module';
 import { SeederModule } from './seeder/seeder.module';
+import { BudgetModule } from './budget/budget.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SeederModule } from './seeder/seeder.module';
     AuthModule,
     WorkModule,
     SeederModule,
+    BudgetModule,
   ],
   controllers: [],
   providers: [],
