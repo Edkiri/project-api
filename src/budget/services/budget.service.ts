@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { HttpException } from '@nestjs/common/exceptions';
+import { NotFoundException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WorkService } from 'src/work/services';
 import { Repository } from 'typeorm';
@@ -17,7 +17,9 @@ export class BudgetService {
   ) {}
 
   async create(data: CreateBudgetDto) {
-    const work = await this.workService.findOne(data.workId);
+    const work = await this.workService.findOneByDescription(
+      data.workDescription,
+    );
     const unit = await this.budgetUnitService.findOneByName(data.unitName);
     const newBudget = this.budgetRepo.create(data);
     newBudget.work = work;
@@ -26,15 +28,12 @@ export class BudgetService {
   }
 
   async findOneByBudgetData(budgetData: CreateBudgetDto) {
-    const oldBudget = await this.budgetRepo.findOne({
-      where: budgetData,
+    const { description, workDescription } = budgetData;
+    const budget = await this.budgetRepo.findOne({
+      where: { description, work: { description: workDescription } },
     });
-    if (!oldBudget) {
-      throw new HttpException(
-        `Ya existe esta obra: '${oldBudget.description}'`,
-        400,
-      );
-    }
-    return oldBudget;
+    if (!budget)
+      throw new NotFoundException(`Not found budget '${description}'`);
+    return budget;
   }
 }

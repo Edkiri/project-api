@@ -8,5 +8,6 @@ import { BudgetService, BudgetUnitService } from './services';
 @Module({
   imports: [TypeOrmModule.forFeature([Budget, BudgetUnit]), WorkModule],
   providers: [BudgetService, BudgetUnitService],
+  exports: [BudgetService, BudgetUnitService],
 })
 export class BudgetModule {}

@@ -27,6 +27,19 @@ export class WorkService {
     return work;
   }
 
+  async findOneByDescription(description: string) {
+    const work = await this.workRepo.findOne({
+      where: { description },
+    });
+    if (!work) {
+      throw new HttpException(
+        `Not found work with description '${description}'.`,
+        404,
+      );
+    }
+    return work;
+  }
+
   async findActiveWorks() {
     return this.workRepo.find({
       where: { isFinished: false },
@@ -34,15 +47,11 @@ export class WorkService {
   }
 
   async findOneByWorkData(workData: CreateWorkDto) {
-    const oldWork = await this.workRepo.findOne({
-      where: workData,
+    const { description, clientName } = workData;
+    const work = await this.workRepo.findOne({
+      where: { description, clientName },
     });
-    if (!oldWork) {
-      throw new HttpException(
-        `Ya existe esta obra: '${oldWork.description} - ${oldWork.clientName}'`,
-        400,
-      );
-    }
-    return oldWork;
+    if (!work) throw new NotFoundException(`Not found work '${description}'`);
+    return work;
   }
 }

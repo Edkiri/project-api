@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import config from 'src/config/config';
 import configSchema from 'src/config/config.schema';
+import { BudgetModule } from 'src/budget/budget.module';
 import { DatabaseModule } from 'src/database/database.module';
 import { UserModule } from 'src/user/user.module';
 import { WorkModule } from 'src/work/work.module';
@@ -19,6 +20,7 @@ import { SeederService } from './seeder.service';
     DatabaseModule,
     UserModule,
     WorkModule,
+    BudgetModule,
   ],
   providers: [SeederService],
 })

@@ -3,11 +3,13 @@ import { Inject } from '@nestjs/common/decorators';
 import { ConfigType } from '@nestjs/config';
 import { ModuleRef } from '@nestjs/core';
 import { TransactionFor } from 'nest-transact';
+import { BudgetService, BudgetUnitService } from 'src/budget/services';
 import config from 'src/config/config';
 
 import { UserService } from 'src/user/user.service';
 import { WorkService, WorkTypeService } from 'src/work/services';
-import { workData, workTypesData } from './inital-data';
+import { budgetsData, workData, workTypesData } from './inital-data';
+import { budgetUnitsData } from './inital-data/budget-unit.data';
 
 @Injectable()
 export class SeederService extends TransactionFor<SeederService> {
@@ -17,6 +19,8 @@ export class SeederService extends TransactionFor<SeederService> {
     private userService: UserService,
     private workTypeService: WorkTypeService,
     private workService: WorkService,
+    private budgetUnitService: BudgetUnitService,
+    private budgetService: BudgetService,
     moduleRef: ModuleRef,
   ) {
     super(moduleRef);
@@ -27,6 +31,8 @@ export class SeederService extends TransactionFor<SeederService> {
     await this.seedAdminUser();
     await this.seedWorkTypes();
     await this.seedWorks();
+    await this.seedBudgetUnits();
+    await this.seedBudgets();
   }
 
   async seedAdminUser() {
@@ -50,7 +56,6 @@ export class SeederService extends TransactionFor<SeederService> {
         return this.workTypeService.create(workType);
       }
     });
-    console.log(createPromises);
     await Promise.all(createPromises);
   }
 
@@ -63,7 +68,30 @@ export class SeederService extends TransactionFor<SeederService> {
         return this.workService.create(work);
       }
     });
-    console.log(createPromises);
+    await Promise.all(createPromises);
+  }
+
+  async seedBudgetUnits() {
+    const createPromises = budgetUnitsData.map(async (budgetUnit) => {
+      try {
+        await this.budgetUnitService.findOneByName(budgetUnit.name);
+        return;
+      } catch {
+        return this.budgetUnitService.create(budgetUnit);
+      }
+    });
+    await Promise.all(createPromises);
+  }
+
+  async seedBudgets() {
+    const createPromises = budgetsData.map(async (budget) => {
+      try {
+        await this.budgetService.findOneByBudgetData(budget);
+        return;
+      } catch {
+        return this.budgetService.create(budget);
+      }
+    });
     await Promise.all(createPromises);
   }
 }

@@ -13,9 +13,9 @@ export class CreateBudgetDto {
   @IsPositive()
   unitPrice!: number;
 
-  @IsNumber()
-  @IsPositive()
-  workId!: number;
+  @IsString()
+  @IsNotEmpty()
+  workDescription!: string;
 
   @IsString()
   @IsNotEmpty()
