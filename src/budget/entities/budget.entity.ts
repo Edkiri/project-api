@@ -17,7 +17,7 @@ export class Budget extends BaseEntity {
   unitPrice!: number;
 
   @Exclude()
-  @ManyToOne(() => Work)
+  @ManyToOne(() => Work, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'work_id' })
   work!: Work;
 

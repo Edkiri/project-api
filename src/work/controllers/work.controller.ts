@@ -1,6 +1,17 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { UpdateWorkDto } from '../dto';
 import { CreateWorkDto } from '../dto/create-work.dto';
 import { WorkService } from '../services/work.service';
 
@@ -17,5 +28,18 @@ export class WorkController {
   @Get('list-active')
   listActiveWorks() {
     return this.workService.findActiveWorks();
+  }
+
+  @Put(':workId')
+  updateWork(
+    @Param('workId', ParseIntPipe) workId: number,
+    @Body() data: UpdateWorkDto,
+  ) {
+    return this.workService.update(+workId, data);
+  }
+
+  @Delete(':workId')
+  deleteWork(@Param('workId', ParseIntPipe) workId: number) {
+    return this.workService.delete(+workId);
   }
 }

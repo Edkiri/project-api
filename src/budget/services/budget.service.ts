@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { WorkService } from 'src/work/services';
 import { Repository } from 'typeorm';
 
-import { CreateBudgetDto } from '../dto';
+import { CreateBudgetDto, UpdateBudgetDto } from '../dto';
 import { Budget } from '../entities';
 import { BudgetUnitService } from './budget-unit.service';
 
@@ -25,6 +25,31 @@ export class BudgetService {
     newBudget.work = work;
     newBudget.unit = unit;
     return this.budgetRepo.save(newBudget);
+  }
+
+  async findOne(id: number) {
+    const budget = await this.budgetRepo.findOne({ where: { id } });
+    if (!budget)
+      throw new NotFoundException(`Not found budget with id '${id}'`);
+    return budget;
+  }
+
+  async update(budgetId: number, changes: UpdateBudgetDto) {
+    const budget = await this.findOne(budgetId);
+    if (changes.unitName) {
+      const unit = await this.budgetUnitService.findOneByName(changes.unitName);
+      budget.unit = unit;
+    }
+    this.budgetRepo.merge(budget, changes);
+    return this.budgetRepo.save(budget);
+  }
+
+  async delete(budgetId: number) {
+    const budget = await this.findOne(budgetId);
+    await this.budgetRepo.remove(budget);
+    return {
+      message: 'Budget deleted',
+    };
   }
 
   async findOneByBudgetData(budgetData: CreateBudgetDto) {
