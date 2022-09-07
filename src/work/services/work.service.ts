@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { HttpException, NotFoundException } from '@nestjs/common/exceptions';
+import {
+  BadRequestException,
+  HttpException,
+  NotFoundException,
+} from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -15,7 +19,11 @@ export class WorkService {
   ) {}
 
   async create(data: CreateWorkDto) {
+    const { description } = data;
     const type = await this.workTypeService.findOneByName(data.typeName);
+    const oldWork = await this.workRepo.findOne({ where: { description } });
+    if (oldWork)
+      throw new BadRequestException(`Work '${description}' already exists.`);
     const newWork = this.workRepo.create(data);
     newWork.type = type;
     return this.workRepo.save(newWork);

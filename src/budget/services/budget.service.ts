@@ -36,4 +36,9 @@ export class BudgetService {
       throw new NotFoundException(`Not found budget '${description}'`);
     return budget;
   }
+
+  async findByWorkId(workId: number) {
+    await this.workService.findOne(workId);
+    return this.budgetRepo.find({ where: { work: { id: workId } } });
+  }
 }
