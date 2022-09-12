@@ -38,6 +38,7 @@
     "@nestjs/core": "^9.0.5",
     "@nestjs/platform-express": "^9.0.5",
     "@nestjs/config": "^2.2.0",
+    "@nestjs/cli": "^9.0.0",
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/swagger": "^6.0.4",
@@ -68,7 +69,6 @@
   },
   "devDependencies": {
     "@darraghor/eslint-plugin-nestjs-typed": "^3.11.2",
-    "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.1",
     "@nestjs/testing": "^9.0.5",
     "@types/bcrypt": "^5.0.0",
