@@ -25,7 +25,7 @@ export class WorkController {
     return this.workService.create(data);
   }
 
-  @Get('list-active')
+  @Get()
   listActiveWorks() {
     return this.workService.findActiveWorks();
   }

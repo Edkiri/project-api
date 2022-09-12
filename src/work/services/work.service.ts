@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
   BadRequestException,
-  HttpException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -61,17 +60,10 @@ export class WorkService {
     return work;
   }
 
-  async findOneByDescription(description: string) {
-    const work = await this.workRepo.findOne({
+  async findOneByDescription(description: string): Promise<Work | null> {
+    return this.workRepo.findOne({
       where: { description },
     });
-    if (!work) {
-      throw new HttpException(
-        `Not found work with description '${description}'.`,
-        404,
-      );
-    }
-    return work;
   }
 
   async findActiveWorks() {
