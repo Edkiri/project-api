@@ -1,27 +1,32 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 import { BaseEntity } from '../../database/entities/base.entity-abstract';
-import { Work } from '../../work/entities';
 import { BudgetUnit } from './budget-unit.entity';
+import { Work } from '../../work/entities';
+import { Expense } from '../../expense/entities';
 
 @Entity({ name: 'budget' })
 export class Budget extends BaseEntity {
   @Column()
   description!: string;
 
-  @Column({ type: 'numeric' })
+  @Column({ type: 'float' })
   quantity!: number;
 
-  @Column({ name: 'unit_price', type: 'numeric' })
+  @Column({ name: 'unit_price', type: 'float' })
   unitPrice!: number;
+
+  @ManyToOne(() => BudgetUnit, { eager: true })
+  @JoinColumn({ name: 'budget_unit_id' })
+  unit!: BudgetUnit;
 
   @Exclude()
   @ManyToOne(() => Work, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'work_id' })
   work!: Work;
 
-  @ManyToOne(() => BudgetUnit, { eager: true })
-  @JoinColumn({ name: 'budget_unit_id' })
-  unit!: BudgetUnit;
+  @Exclude()
+  @OneToMany(() => Expense, (expense) => expense.budget)
+  expenses?: Expense[];
 }

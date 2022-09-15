@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { WorkModule } from './work/work.module';
 import { SeederModule } from './seeder/seeder.module';
 import { BudgetModule } from './budget/budget.module';
+import { PaymentModule } from './payment/payment.module';
+import { ExpenseModule } from './expense/expense.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { BudgetModule } from './budget/budget.module';
     WorkModule,
     SeederModule,
     BudgetModule,
+    ExpenseModule,
+    PaymentModule,
   ],
   controllers: [],
   providers: [],
