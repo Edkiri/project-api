@@ -30,10 +30,10 @@ export class BudgetUnitService {
 
   async create(data: CreateBudgetUnitDto) {
     const { name } = data;
-    const workType = await this.budgetRepo.findOne({
+    const projectType = await this.budgetRepo.findOne({
       where: { name },
     });
-    if (workType) {
+    if (projectType) {
       throw new BadRequestException(
         `Ya existe una unidad de medida '${name}' en la base de datos`,
       );

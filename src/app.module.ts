@@ -6,11 +6,11 @@ import config from './config/config';
 import configSchema from './config/config.schema';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
-import { WorkModule } from './work/work.module';
 import { SeederModule } from './seeder/seeder.module';
 import { BudgetModule } from './budget/budget.module';
 import { PaymentModule } from './payment/payment.module';
 import { ExpenseModule } from './expense/expense.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -23,11 +23,11 @@ import { ExpenseModule } from './expense/expense.module';
     DatabaseModule,
     UserModule,
     AuthModule,
-    WorkModule,
     SeederModule,
     BudgetModule,
     ExpenseModule,
     PaymentModule,
+    ProjectModule,
   ],
   controllers: [],
   providers: [],

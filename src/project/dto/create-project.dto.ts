@@ -1,7 +1,7 @@
 import { Transform, TransformFnParams } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateWorkDto {
+export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   typeName!: string;

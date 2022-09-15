@@ -1,6 +1,6 @@
-import { CreateWorkTypeDto } from 'src/work/dto';
+import { CreateProjectTypeDto } from 'src/project/dto';
 
-export const workTypesData: CreateWorkTypeDto[] = [
+export const projectTypesData: CreateProjectTypeDto[] = [
   { name: 'Diseño' },
   { name: 'Remodelación' },
   { name: 'Construcción' },

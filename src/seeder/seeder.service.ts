@@ -7,8 +7,8 @@ import { BudgetService, BudgetUnitService } from 'src/budget/services';
 import config from 'src/config/config';
 
 import { UserService } from 'src/user/user.service';
-import { WorkService, WorkTypeService } from 'src/work/services';
-import { budgetsData, workData, workTypesData } from './inital-data';
+import { ProjectService, ProjectTypeService } from 'src/project/services';
+import { budgetsData, projectData, projectTypesData } from './inital-data';
 import { budgetUnitsData } from './inital-data/budget-unit.data';
 
 @Injectable()
@@ -17,8 +17,8 @@ export class SeederService extends TransactionFor<SeederService> {
     @Inject(config.KEY)
     private configService: ConfigType<typeof config>,
     private userService: UserService,
-    private workTypeService: WorkTypeService,
-    private workService: WorkService,
+    private projectTypeService: ProjectTypeService,
+    private projectService: ProjectService,
     private budgetUnitService: BudgetUnitService,
     private budgetService: BudgetService,
     moduleRef: ModuleRef,
@@ -29,8 +29,8 @@ export class SeederService extends TransactionFor<SeederService> {
   async seed() {
     console.log('Starting seed...');
     await this.seedAdminUser();
-    await this.seedWorkTypes();
-    await this.seedWorks();
+    await this.seedProjectTypes();
+    await this.seedProjects();
     await this.seedBudgetUnits();
     await this.seedBudgets();
   }
@@ -47,25 +47,25 @@ export class SeederService extends TransactionFor<SeederService> {
     });
   }
 
-  async seedWorkTypes() {
-    const createPromises = workTypesData.map(async (workType) => {
+  async seedProjectTypes() {
+    const createPromises = projectTypesData.map(async (projectType) => {
       try {
-        await this.workTypeService.findOneByName(workType.name);
+        await this.projectTypeService.findOneByName(projectType.name);
         return;
       } catch {
-        return this.workTypeService.create(workType);
+        return this.projectTypeService.create(projectType);
       }
     });
     await Promise.all(createPromises);
   }
 
-  async seedWorks() {
-    const createPromises = workData.map(async (work) => {
+  async seedProjects() {
+    const createPromises = projectData.map(async (project) => {
       try {
-        await this.workService.findOneByWorkData(work);
+        await this.projectService.findOneByProjectData(project);
         return;
       } catch {
-        return this.workService.create(work);
+        return this.projectService.create(project);
       }
     });
     await Promise.all(createPromises);

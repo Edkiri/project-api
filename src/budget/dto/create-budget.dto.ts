@@ -17,7 +17,7 @@ export class CreateBudgetDto {
 
   @IsString()
   @IsNotEmpty()
-  workDescription!: string;
+  projectDescription!: string;
 
   @IsString()
   @IsNotEmpty()

@@ -3,7 +3,7 @@ import { Exclude } from 'class-transformer';
 
 import { BaseEntity } from '../../database/entities/base.entity-abstract';
 import { BudgetUnit } from './budget-unit.entity';
-import { Work } from '../../work/entities';
+import { Project } from '../../project/entities';
 import { Expense } from '../../expense/entities';
 
 @Entity({ name: 'budget' })
@@ -22,9 +22,9 @@ export class Budget extends BaseEntity {
   unit!: BudgetUnit;
 
   @Exclude()
-  @ManyToOne(() => Work, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'work_id' })
-  work!: Work;
+  @ManyToOne(() => Project, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'project_id' })
+  project!: Project;
 
   @Exclude()
   @OneToMany(() => Expense, (expense) => expense.budget)

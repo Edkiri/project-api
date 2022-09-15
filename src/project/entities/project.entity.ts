@@ -1,9 +1,9 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../database/entities/base.entity-abstract';
-import { WorkType } from './work-type.entity';
+import { ProjectType } from './project-type.entity';
 
-@Entity({ name: 'work' })
-export class Work extends BaseEntity {
+@Entity({ name: 'project' })
+export class Project extends BaseEntity {
   @Index()
   @Column({ unique: true })
   description!: string;
@@ -14,7 +14,7 @@ export class Work extends BaseEntity {
   @Column({ name: 'is_finished', default: false })
   isFinished!: boolean;
 
-  @ManyToOne(() => WorkType, { eager: true, nullable: true })
-  @JoinColumn({ name: 'work_type_id' })
-  type?: WorkType;
+  @ManyToOne(() => ProjectType, { eager: true, nullable: true })
+  @JoinColumn({ name: 'project_type_id' })
+  type?: ProjectType;
 }

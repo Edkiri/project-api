@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
-import { WorkService } from 'src/work/services';
+import { ProjectService } from 'src/project/services';
 import { Repository } from 'typeorm';
 
 import { CreateBudgetDto, UpdateBudgetDto } from '../dto';
@@ -13,16 +13,16 @@ export class BudgetService {
   constructor(
     @InjectRepository(Budget) private budgetRepo: Repository<Budget>,
     private budgetUnitService: BudgetUnitService,
-    private workService: WorkService,
+    private projectService: ProjectService,
   ) {}
 
   async create(data: CreateBudgetDto) {
-    const work = await this.workService.findOneByDescription(
-      data.workDescription,
+    const project = await this.projectService.findOneByDescription(
+      data.projectDescription,
     );
     const unit = await this.budgetUnitService.findOneByName(data.unitName);
     const newBudget = this.budgetRepo.create(data);
-    newBudget.work = work;
+    newBudget.project = project;
     newBudget.unit = unit;
     return this.budgetRepo.save(newBudget);
   }
@@ -53,17 +53,17 @@ export class BudgetService {
   }
 
   async findOneByBudgetData(budgetData: CreateBudgetDto) {
-    const { description, workDescription } = budgetData;
+    const { description, projectDescription } = budgetData;
     const budget = await this.budgetRepo.findOne({
-      where: { description, work: { description: workDescription } },
+      where: { description, project: { description: projectDescription } },
     });
     if (!budget)
       throw new NotFoundException(`Not found budget '${description}'`);
     return budget;
   }
 
-  async findByWorkId(workId: number) {
-    await this.workService.findOne(workId);
-    return this.budgetRepo.find({ where: { work: { id: workId } } });
+  async findByProjectId(projectId: number) {
+    await this.projectService.findOne(projectId);
+    return this.budgetRepo.find({ where: { project: { id: projectId } } });
   }
 }

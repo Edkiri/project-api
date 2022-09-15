@@ -1,6 +1,6 @@
-import { CreateWorkDto } from 'src/work/dto';
+import { CreateProjectDto } from 'src/project/dto';
 
-export const workData: CreateWorkDto[] = [
+export const projectData: CreateProjectDto[] = [
   {
     typeName: 'Remodelación',
     description: 'SANTA CATALINA 282',

@@ -35,7 +35,7 @@ export class ExpenseController {
   }
 
   @Put(':expenseId')
-  updateWork(
+  updateExpense(
     @Param('budgetId', ParseIntPipe) budgetId: number,
     @Param('expenseId', ParseIntPipe) expenseId: number,
     @Body() data: UpdateExpenseDto,
@@ -44,7 +44,7 @@ export class ExpenseController {
   }
 
   @Delete(':expenseId')
-  deleteWork(
+  deleteExpense(
     @Param('budgetId', ParseIntPipe) budgetId: number,
     @Param('expenseId', ParseIntPipe) expenseId: number,
   ) {

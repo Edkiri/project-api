@@ -1,3 +1,3 @@
-export * from './works.data';
-export * from './work-types.data';
+export * from './projects.data';
+export * from './project-types.data';
 export * from './budgets.data';

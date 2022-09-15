@@ -1,8 +1,8 @@
 {
-  "name": "predikete-api",
+  "name": "project-api",
   "version": "1.0.0",
   "private": true,
-  "description": "** predikete-api",
+  "description": "** project-api",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -25,14 +25,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Edkiri/predikete-api.git"
+    "url": "git+https://github.com/Edkiri/project-api.git"
   },
   "author": "Eduardo Kiriakos <eduardokiriakos@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Edkiri/predikete-api/issues"
+    "url": "https://github.com/Edkiri/project-api/issues"
   },
-  "homepage": "https://github.com/Edkiri/predikete-api#readme",
+  "homepage": "https://github.com/Edkiri/project-api#readme",
   "dependencies": {
     "@nestjs/common": "^9.0.11",
     "@nestjs/core": "^9.0.5",
