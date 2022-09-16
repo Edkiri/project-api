@@ -11,6 +11,7 @@ import { BudgetModule } from './budget/budget.module';
 import { PaymentModule } from './payment/payment.module';
 import { ExpenseModule } from './expense/expense.module';
 import { ProjectModule } from './project/project.module';
+import { IncomeModule } from './income/income.module';
 
 @Module({
   imports: [
@@ -21,13 +22,14 @@ import { ProjectModule } from './project/project.module';
       validationSchema: configSchema,
     }),
     DatabaseModule,
+    SeederModule,
     UserModule,
     AuthModule,
-    SeederModule,
+    ProjectModule,
     BudgetModule,
     ExpenseModule,
+    IncomeModule,
     PaymentModule,
-    ProjectModule,
   ],
   controllers: [],
   providers: [],

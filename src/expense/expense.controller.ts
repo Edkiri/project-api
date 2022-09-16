@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -14,7 +13,7 @@ import { CreatePaymentDto } from 'src/payment/dto';
 import { CreateExpenseDto, UpdateExpenseDto } from './dto';
 import { ExpenseService } from './expense.service';
 
-@Controller('budget/:budgetId/expense')
+@Controller('expense')
 export class ExpenseController {
   constructor(
     private expenseService: ExpenseService,
@@ -22,50 +21,40 @@ export class ExpenseController {
   ) {}
 
   @Post()
-  createExpense(
-    @Param('budgetId', ParseIntPipe) budgetId: number,
-    @Body() data: CreateExpenseDto,
-  ) {
-    return this.expenseService.create(+budgetId, data);
-  }
-
-  @Get()
-  getBudgetExpenses(@Param('budgetId', ParseIntPipe) budgetId: number) {
-    return this.expenseService.findByBudgetId(+budgetId);
+  createExpense(@Body() data: CreateExpenseDto) {
+    return this.expenseService.create(data);
   }
 
   @Put(':expenseId')
   updateExpense(
-    @Param('budgetId', ParseIntPipe) budgetId: number,
     @Param('expenseId', ParseIntPipe) expenseId: number,
     @Body() data: UpdateExpenseDto,
   ) {
-    return this.expenseService.update(+budgetId, +expenseId, data);
+    return this.expenseService.update(+expenseId, data);
   }
 
   @Delete(':expenseId')
-  deleteExpense(
-    @Param('budgetId', ParseIntPipe) budgetId: number,
-    @Param('expenseId', ParseIntPipe) expenseId: number,
-  ) {
-    return this.expenseService.delete(+budgetId, +expenseId);
+  async deleteExpense(@Param('expenseId', ParseIntPipe) expenseId: number) {
+    const response = await this.dataSource.transaction((manager) => {
+      return this.expenseService.withTransaction(manager).delete(+expenseId);
+    });
+    return response;
   }
 
-  @Post(':expenseId/add-payment')
+  @Post(':expenseId/payment')
   async addPaymentToExpense(
-    @Param('budgetId', ParseIntPipe) budgetId: number,
     @Param('expenseId', ParseIntPipe) expenseId: number,
     @Body() data: CreatePaymentDto,
   ) {
     const payment = await this.dataSource.transaction((manager) => {
       return this.expenseService
         .withTransaction(manager)
-        .insertPayment(+budgetId, +expenseId, data);
+        .insertPayment(+expenseId, data);
     });
     return payment;
   }
 
-  @Delete(':expenseId/remove-payment/:paymentId')
+  @Delete(':expenseId/payment/:paymentId')
   async removePaymentFromExpense(
     @Param('paymentId', ParseIntPipe) paymentId: number,
   ) {

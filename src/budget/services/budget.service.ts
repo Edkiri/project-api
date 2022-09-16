@@ -27,8 +27,11 @@ export class BudgetService {
     return this.budgetRepo.save(newBudget);
   }
 
-  async findOne(id: number) {
-    const budget = await this.budgetRepo.findOne({ where: { id } });
+  async findOne(id: number, relations = false) {
+    const budget = await this.budgetRepo.findOne({
+      where: { id },
+      relations: { expenses: relations },
+    });
     if (!budget)
       throw new NotFoundException(`Not found budget with id '${id}'`);
     return budget;
@@ -60,10 +63,5 @@ export class BudgetService {
     if (!budget)
       throw new NotFoundException(`Not found budget '${description}'`);
     return budget;
-  }
-
-  async findByProjectId(projectId: number) {
-    await this.projectService.findOne(projectId);
-    return this.budgetRepo.find({ where: { project: { id: projectId } } });
   }
 }

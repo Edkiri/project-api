@@ -15,12 +15,6 @@ export class UpdateAccountDto {
   platform?: string;
 
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
-  currency?: string;
-
-  @IsOptional()
   @IsNumber()
   balance?: number;
 }

@@ -1,5 +1,5 @@
 import { Transform, TransformFnParams } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 
 export class CreateAccountDto {
   @IsString()
@@ -12,10 +12,9 @@ export class CreateAccountDto {
   @Transform(({ value }: TransformFnParams) => value?.trim())
   platform: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
-  currency: string;
+  @IsNumber()
+  @IsPositive()
+  currencyId: number;
 
   @IsNumber()
   balance: number;

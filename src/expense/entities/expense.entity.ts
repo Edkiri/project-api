@@ -31,7 +31,11 @@ export class Expense extends BaseEntity {
   @Column({ name: 'is_paid', default: false })
   isPaid!: boolean;
 
-  @ManyToMany(() => Payment, { cascade: true, onDelete: 'CASCADE' })
+  @ManyToMany(() => Payment, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    eager: true,
+  })
   @JoinTable({
     name: 'budget_expense_payments',
     joinColumn: {

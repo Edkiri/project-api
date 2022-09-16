@@ -19,14 +19,19 @@ export class PaymentService {
   async create(data: CreatePaymentDto) {
     const payment = this.paymentRepo.create(data);
     const account = await this.accountService.findOne(data.accountId);
-    if (account.currency !== 'USD' && !payment.currencyRate) {
+    if (account.currency.name !== 'USD' && !payment.currencyRate) {
       throw new BadRequestException(
-        `Se requiere una tasa en relación al dólar`,
+        `Se requiere una tasa en relación al dólar 'USD'`,
       );
     }
     if (account.balance < payment.amount) {
       throw new BadRequestException(
         `Fondo insuficiente de la cuenta '${account.platform} - ${account.owner}'`,
+      );
+    }
+    if (account.currency.id !== payment.currency.id) {
+      throw new BadRequestException(
+        `No puedes registrar pagos en '${payment.currency.name}' con esta cuenta'`,
       );
     }
     payment.account = account;

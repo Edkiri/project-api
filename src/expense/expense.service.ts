@@ -21,17 +21,16 @@ export class ExpenseService extends TransactionFor<ExpenseService> {
     super(moduleRef);
   }
 
-  async create(budgetId: number, data: CreateExpenseDto) {
-    const budget = await this.budgetService.findOne(budgetId);
+  async create(data: CreateExpenseDto) {
+    const budget = await this.budgetService.findOne(data.budgetId);
     const newExpense = this.expenseRepo.create({ ...data });
     newExpense.budget = budget;
     return this.expenseRepo.save(newExpense);
   }
 
-  async findOne(budgetId: number, expenseId: number, payments = false) {
-    await this.budgetService.findOne(budgetId);
+  async findOne(expenseId: number, payments = false) {
     const expense = await this.expenseRepo.findOne({
-      where: { budget: { id: budgetId }, id: expenseId },
+      where: { id: expenseId },
       relations: { payments },
     });
     if (!expense) {
@@ -40,34 +39,25 @@ export class ExpenseService extends TransactionFor<ExpenseService> {
     return expense;
   }
 
-  async findByBudgetId(budgetId: number) {
-    await this.budgetService.findOne(budgetId);
-    return this.expenseRepo.find({
-      where: { budget: { id: budgetId } },
-      relations: { payments: true },
-    });
-  }
-
-  async update(budgetId: number, expenseId: number, changes: UpdateExpenseDto) {
-    const expense = await this.findOne(budgetId, expenseId);
+  async update(expenseId: number, changes: UpdateExpenseDto) {
+    const expense = await this.findOne(expenseId);
     this.expenseRepo.merge(expense, changes);
     return this.expenseRepo.save(expense);
   }
 
-  async delete(budgetId: number, expenseId: number) {
-    const expense = await this.findOne(budgetId, expenseId);
+  async delete(expenseId: number) {
+    const expense = await this.findOne(expenseId, true);
+    expense.payments.map(async (payment) => {
+      await this.paymentService.delete(payment.id);
+    });
     await this.expenseRepo.remove(expense);
     return {
       message: 'Expense deleted',
     };
   }
 
-  async insertPayment(
-    budgetId: number,
-    expenseId: number,
-    data: CreatePaymentDto,
-  ) {
-    const expense = await this.findOne(budgetId, expenseId, true);
+  async insertPayment(expenseId: number, data: CreatePaymentDto) {
+    const expense = await this.findOne(expenseId, true);
     const payment = await this.paymentService.create(data);
     expense.payments.push(payment);
     await this.expenseRepo.save(expense);

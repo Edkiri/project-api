@@ -1,6 +1,15 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { BaseEntity } from '../../database/entities/base.entity-abstract';
 import { ProjectType } from './project-type.entity';
+import { Budget } from '../../budget/entities';
+import { Income } from '../../income/entities';
 
 @Entity({ name: 'project' })
 export class Project extends BaseEntity {
@@ -17,4 +26,10 @@ export class Project extends BaseEntity {
   @ManyToOne(() => ProjectType, { eager: true, nullable: true })
   @JoinColumn({ name: 'project_type_id' })
   type?: ProjectType;
+
+  @OneToMany(() => Budget, (budget) => budget.project)
+  budgets?: Budget[];
+
+  @OneToMany(() => Income, (income) => income.project)
+  incomes?: Income[];
 }

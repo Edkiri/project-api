@@ -14,7 +14,7 @@ import { CreateBudgetDto, UpdateBudgetDto } from '../dto';
 import { BudgetService } from '../services';
 
 @UseGuards(JwtAuthGuard)
-@Controller('project/:projectId/budget')
+@Controller('budget')
 export class BudgetController {
   constructor(private budgetService: BudgetService) {}
 
@@ -23,9 +23,9 @@ export class BudgetController {
     return this.budgetService.create(data);
   }
 
-  @Get()
-  listBudgets(@Param('projectId', ParseIntPipe) projectId: number) {
-    return this.budgetService.findByProjectId(+projectId);
+  @Get(':budgetId')
+  getBudget(@Param('budgetId', ParseIntPipe) budgetId: number) {
+    return this.budgetService.findOne(+budgetId, true);
   }
 
   @Put(':budgetId')

@@ -8,6 +8,11 @@ import { Expense } from '../../expense/entities';
 
 @Entity({ name: 'budget' })
 export class Budget extends BaseEntity {
+  @Exclude()
+  @ManyToOne(() => Project, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'project_id' })
+  project!: Project;
+
   @Column()
   description!: string;
 
@@ -21,12 +26,6 @@ export class Budget extends BaseEntity {
   @JoinColumn({ name: 'budget_unit_id' })
   unit!: BudgetUnit;
 
-  @Exclude()
-  @ManyToOne(() => Project, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'project_id' })
-  project!: Project;
-
-  @Exclude()
   @OneToMany(() => Expense, (expense) => expense.budget)
   expenses?: Expense[];
 }

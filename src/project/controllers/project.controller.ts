@@ -30,6 +30,11 @@ export class ProjectController {
     return this.projectService.findActiveProjects();
   }
 
+  @Get(':projectId/budget')
+  getProjectBudgets(@Param('projectId', ParseIntPipe) projectId: number) {
+    return this.projectService.findBudgets(+projectId);
+  }
+
   @Put(':projectId')
   updateProject(
     @Param('projectId', ParseIntPipe) projectId: number,

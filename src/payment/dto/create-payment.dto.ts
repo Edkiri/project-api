@@ -6,6 +6,10 @@ export class CreatePaymentDto {
   accountId: number;
 
   @IsNumber()
+  @IsPositive()
+  currencyId: number;
+
+  @IsNumber()
   amount: number;
 
   @IsNumber()

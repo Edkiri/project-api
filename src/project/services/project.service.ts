@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Budget } from '../../budget/entities';
 import { Repository } from 'typeorm';
 import { CreateProjectDto, UpdateProjectDto } from '../dto';
 import { Project } from '../entities';
@@ -67,6 +68,17 @@ export class ProjectService {
     return this.projectRepo.findOne({
       where: { description },
     });
+  }
+
+  async findBudgets(projectId: number): Promise<Budget[]> {
+    const project = await this.projectRepo.findOne({
+      where: { id: projectId },
+      relations: { budgets: true },
+    });
+    if (!project) {
+      throw new NotFoundException(`Not found project with id '${projectId}'`);
+    }
+    return project.budgets;
   }
 
   async findActiveProjects() {
